@@ -231,7 +231,6 @@ class BioSystem {
                             tau_step /= 2.;
                             continue whileloop;
                         }
-
                     }
                 }
                 replication_allocations[mh_index] = n_replications;

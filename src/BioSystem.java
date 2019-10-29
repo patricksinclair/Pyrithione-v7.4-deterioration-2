@@ -433,7 +433,7 @@ class BioSystem {
             if((bs.getTimeElapsed()%interval >= 0. && bs.getTimeElapsed()%interval <= 0.02*interval) && !alreadyRecorded){
 
                 int total_N = bs.getTotalN();
-                System.out.println("rep : "+i+"\ttau: "+bs.tau+"tau_1/2s: "+bs.tau_halves_counter+"\tK*: "+bs.biofilm_threshold+"\td_rate: "+bs.deterioration_rate+"\tt: "+bs.getTimeElapsed()+"\tpop size: "+total_N+"\tbf_edge: "+bs.getBiofilmEdge()+"\tsystem size: "+bs.getSystemSize()+"\tc_max: "+bs.c_max);
+                System.out.println("rep : "+i+"\ttau: "+bs.tau+"\ttau_1/2s: "+bs.tau_halves_counter+"\tK*: "+bs.biofilm_threshold+"\td_rate: "+bs.deterioration_rate+"\tt: "+bs.getTimeElapsed()+"\tpop size: "+total_N+"\tbf_edge: "+bs.getBiofilmEdge()+"\tsystem size: "+bs.getSystemSize()+"\tc_max: "+bs.c_max);
                 alreadyRecorded = true;
             }
 

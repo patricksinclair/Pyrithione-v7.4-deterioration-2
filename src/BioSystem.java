@@ -285,9 +285,9 @@ class BioSystem {
         int n_reps = 15; //the number of times each simulation is repeated for
         int n_measurements = 20; //the number of measurements taken for deterioration and rho
 
-        double K_min = 0.5, K_max = 1.0;
+        double K_min = 0.45, K_max = 0.95;
         double K_increment = (K_max - K_min)/(double)n_measurements;
-        double det_min = 0.002, det_max = 0.006;
+        double det_min = 0.002, det_max = 0.02;
         double det_increment = (det_max - det_min)/(double)n_measurements;
         double duration = 240.; //10 days
         String filename = String.format("varying_detRate-(%.4f-%.4f)_and_thresholdK-(%.4f-%.4f)-tau=%.3f", det_min, det_max, K_min, K_max, tau_val);

@@ -2,9 +2,9 @@
 public class PyrithioneMain {
     public static void main(String[] args){
 
-        BioSystem.varyingDeteriorationAndThreshold(0.01);
+        //BioSystem.varyingDeteriorationAndThreshold(0.01);
 
         double scale_99 = 2.71760274, sigma_99 = 0.56002833;
-        //BioSystem.varyingTauStep(scale_99, sigma_99);
+        BioSystem.varyingTauStep(scale_99, sigma_99);
     }
 }

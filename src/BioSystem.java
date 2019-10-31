@@ -354,6 +354,8 @@ class BioSystem {
         boolean alreadyRecorded = false;
 
         BioSystem bs = new BioSystem(det_r, thresh_K, tau_val);
+        double start_time = System.currentTimeMillis();
+
         while(bs.time_elapsed <= (duration+0.001*interval)){
             if((bs.getTimeElapsed()%interval >= 0. && bs.getTimeElapsed()%interval <= 0.02*interval) && !alreadyRecorded){
 
@@ -367,9 +369,11 @@ class BioSystem {
             bs.performAction();
         }
 
+        double finish_time = System.currentTimeMillis();
+        double simulation_time = finish_time - start_time;
         double[] counters = new double[]{bs.deaths_counter, bs.detachments_counter, bs.immigrations_counter, bs.replications_counter, bs.tau_halves_counter};
 
-        return new Databox(bs.tau, bs.exit_time, bs.biofilm_threshold, bs.deterioration_rate,  bs.getBiofilmThickness(), counters);
+        return new Databox(bs.tau, simulation_time, bs.exit_time, bs.biofilm_threshold, bs.deterioration_rate,  bs.getBiofilmThickness(), counters);
     }
 
 
@@ -388,8 +392,8 @@ class BioSystem {
         double tau_min = 0.01, tau_max = 1.2;
         double tau_increment = (tau_max - tau_min)/(double)n_measurements;
         double duration = 1000.; //1000 hours
-        String filename = String.format("varying_tauStep-(%.4f-%.4f)-v2", tau_min, tau_max);
-        String[] headers = new String[]{"tau", "exit_time", "exit_time_stDev", "K*", "det_rate", "thickness", "thick_stDev", "n_deaths", "n_detachments", "n_immigrations", "n_replications", "n_tau_halves"};
+        String filename = String.format("varying_tauStep-(%.4f-%.4f)-v3", tau_min, tau_max);
+        String[] headers = new String[]{"tau", "sim_time", "sim_time_stDev", "exit_time", "exit_time_stDev", "K*", "det_rate", "thickness", "thick_stDev", "n_deaths", "n_detachments", "n_immigrations", "n_replications", "n_tau_halves"};
 
         ArrayList<Databox> Databoxes = new ArrayList<>();
 
@@ -429,6 +433,8 @@ class BioSystem {
 
         BioSystem bs = new BioSystem(alpha, c_max, scale, sigma, tau);
 
+        double start_time = System.currentTimeMillis();
+
         while(bs.time_elapsed <= (duration+0.001*interval)){
             if((bs.getTimeElapsed()%interval <= 0.02*interval) && !alreadyRecorded){
 
@@ -442,9 +448,12 @@ class BioSystem {
             bs.performAction();
         }
 
+        double finish_time = System.currentTimeMillis();
+        double simulation_time = finish_time - start_time;
+
         double[] counters = new double[]{bs.deaths_counter, bs.detachments_counter, bs.immigrations_counter, bs.replications_counter, bs.tau_halves_counter};
 
-        return new Databox(bs.tau, bs.exit_time, bs.biofilm_threshold, bs.deterioration_rate,  bs.getBiofilmThickness(), counters);
+        return new Databox(bs.tau, simulation_time, bs.exit_time, bs.biofilm_threshold, bs.deterioration_rate,  bs.getBiofilmThickness(), counters);
     }
 
 

@@ -310,11 +310,11 @@ class BioSystem {
 
         double K_min = 0.45, K_max = 0.95;
         double K_increment = (K_max - K_min)/(double)n_measurements;
-        double det_min = 0.002, det_max = 0.2;
+        double det_min = 0.004, det_max = 0.1;
         double det_increment = (det_max - det_min)/(double)n_measurements;
         double duration = 240.; //10 days
         String filename = String.format("varying_detRate-(%.4f-%.4f)_and_thresholdK-(%.4f-%.4f)-tau=%.3f", det_min, det_max, K_min, K_max, tau_val);
-        String[] headers = new String[]{"tau", "exit_time", "exit_time_stDev", "K*", "det_rate", "thickness", "thick_stDev", "n_deaths", "n_detachments", "n_immigrations", "n_replications", "n_tau_halves"};
+        String[] headers = new String[]{"tau", "sim_time", "sim_time_stDev","exit_time", "exit_time_stDev", "K*", "det_rate", "thickness", "thick_stDev", "n_deaths", "n_detachments", "n_immigrations", "n_replications", "n_tau_halves"};
         ArrayList<Databox> Databoxes = new ArrayList<>();
 
         for(double thresh_K = K_min; thresh_K <= K_max; thresh_K+=K_increment){

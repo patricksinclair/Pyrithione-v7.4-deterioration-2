@@ -225,36 +225,43 @@ class BioSystem {
                     ///////// MIGRATIONS AND DETACHMENTS //////////////////////
                     //only non-dead bacteria can migrate or detach
                     if(n_deaths[bac_index] == 0) {
-                        //need to handle edge migrations
-                        if(mh_index == 0) {
-                            n_migrations[bac_index] = poiss_migration_edge.sample();
 
-                        } else if(mh_index == immigration_index) {
-
-                            detachment_allocations[bac_index] = poiss_deterioration.sample();
+                        //firstly work out the migrations
+                        //do edge cases and bulk, then do detachments and set detaching migrations to 0
+                        //only do migrations if there's multiple microhabs
+                        if(immigration_index > 0) {
+                            if(mh_index == 0 || mh_index == immigration_index) {
+                                n_migrations[bac_index] = poiss_migration_edge.sample();
+                            } else {
+                                n_migrations[bac_index] = poiss_migration.sample();
+                            }
                             //check for double events
-                            if( detachment_allocations[bac_index] > 1) {
-                                tau_halves_counter++;
+                            if(n_migrations[bac_index] > 1) {
+                                //tau_halves_counter++;
                                 tau_step /= 2.;
                                 continue whileloop;
                             }
+                        }
 
+                        //migrations sorted, now do detachments
+                        //detaching bacteria can't migrate
+                        if(mh_index == immigration_index){
+                            detachment_allocations[bac_index] = poiss_deterioration.sample();
+                            //check for double events
+                            if( detachment_allocations[bac_index] > 1) {
+                                //tau_halves_counter++;
+                                tau_step /= 2.;
+                                continue whileloop;
+                            }
                             //bacteria can only migrate if it's not detaching
-                            if(detachment_allocations[bac_index] == 0) {
-                                n_migrations[bac_index] = poiss_migration_edge.sample();
+                            if(detachment_allocations[bac_index] > 0) {
+                                n_migrations[bac_index] = 0;
                             }
 
-                        } else {
-                            n_migrations[bac_index] = poiss_migration.sample();
                         }
 
-                        //check for double events
-                        if(n_migrations[bac_index] > 1){
-                            tau_halves_counter++;
-                            tau_step /= 2.;
-                            continue whileloop;
-                        }
                     }
+                    //////////////////////////////////////////////////////
                 }
                 replication_allocations[mh_index] = n_replications;
                 death_allocations[mh_index] = n_deaths;
@@ -310,10 +317,10 @@ class BioSystem {
 
         double K_min = 0.45, K_max = 0.95;
         double K_increment = (K_max - K_min)/(double)n_measurements;
-        double det_min = 0.004, det_max = 0.1;
+        double det_min = 0.009, det_max = 0.09;
         double det_increment = (det_max - det_min)/(double)n_measurements;
         double duration = 240.; //10 days
-        String filename = String.format("varying_detRate-(%.4f-%.4f)_and_thresholdK-(%.4f-%.4f)-tau=%.3f", det_min, det_max, K_min, K_max, tau_val);
+        String filename = String.format("varying_detRate-(%.4f-%.4f)_and_thresholdK-(%.4f-%.4f)-tau=%.3f-BUGFIXED", det_min, det_max, K_min, K_max, tau_val);
         String[] headers = new String[]{"tau", "sim_time", "sim_time_stDev","exit_time", "exit_time_stDev", "K*", "det_rate", "thickness", "thick_stDev", "n_deaths", "n_detachments", "n_immigrations", "n_replications", "n_tau_halves"};
         ArrayList<Databox> Databoxes = new ArrayList<>();
 
